@@ -23,6 +23,23 @@ export default {
       backups: 5,
       // 圧縮
       compress: true
+    },
+    //
+    applicationLog: {
+      // 出力方法
+      type: 'multiFile',
+      //
+      base: path.join(APP_ROOT, './log/application/'),
+      //
+      property: 'key',
+      // ファイルの拡張子はlogとする
+      extension: '.log',
+      // 5MB = 5 * 1024 * 1024 (bytes)
+      maxLogSize: 5242880,
+      // 世代管理は5ファイルまで、古いやつからgzで圧縮されていく
+      backups: 5,
+      //
+      compress: true
     }
   },
   categories: {
@@ -37,6 +54,11 @@ export default {
       // appenders
       appenders: ['systemLog'],
       // 最小出力レベル
+      level: 'ALL'
+    },
+    //
+    application: {
+      appenders: ['applicationLog'],
       level: 'ALL'
     }
   }

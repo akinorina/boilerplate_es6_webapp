@@ -9,12 +9,19 @@ import cookieParser from 'cookie-parser'
 
 // systemロガー
 import systemLogger from '../lib/log/systemLogger'
+// applicationロガー
+import applicationLogger from '../lib/log/applicationLogger'
 
 // routers
 import indexRouter from './routes/index'
 import usersRouter from './routes/users'
 
 const app = express()
+
+// アプリケーションログ出力
+applicationLogger.error('app', '*** HERE! 1 ***')
+applicationLogger.error('app2', '*** HERE! 2 ***')
+applicationLogger.error('app2', '*** HERE! 3 ***')
 
 // 意図的にエラーを起こすルート
 app.get('/error', (req, res) => {
