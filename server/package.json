@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "npx webpack --mode development",
-    "start": "node ./dist/public/app"
+    "start": "node ./dist/public/index"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",

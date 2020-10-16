@@ -6,12 +6,12 @@ const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
   // エントリーポイント
-  entry: './src/app.js',
+  entry: './src/index.js',
 
   // 出力設定
   output: {
     // 出力するファイル名
-    filename: 'app.js',
+    filename: 'index.js',
 
     // 出力先のパス（絶対パスを指定する必要がある）
     path: path.join(__dirname, 'dist/public')
