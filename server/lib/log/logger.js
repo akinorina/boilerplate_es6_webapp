@@ -26,3 +26,4 @@ for (let level of levels) {
 export var console = log4js.getLogger('default')
 export var system = log4js.getLogger('system')
 export var application = new ApplicationLogger()
+export var access = log4js.getLogger('access')

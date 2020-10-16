@@ -9,8 +9,10 @@ import cookieParser from 'cookie-parser'
 
 // systemロガー
 import systemLogger from '../lib/log/systemLogger'
-// applicationロガー
-import applicationLogger from '../lib/log/applicationLogger'
+// // applicationロガー
+// import applicationLogger from '../lib/log/applicationLogger'
+// accessロガー
+import accessLogger from '../lib/log/accessLogger'
 
 // routers
 import indexRouter from './routes/index'
@@ -18,15 +20,15 @@ import usersRouter from './routes/users'
 
 const app = express()
 
-// アプリケーションログ出力
-applicationLogger.error('app', '*** HERE! 1 ***')
-applicationLogger.error('app2', '*** HERE! 2 ***')
-applicationLogger.error('app2', '*** HERE! 3 ***')
+// // アプリケーションログ出力
+// applicationLogger.error('app', '*** HERE! 1 ***')
+// applicationLogger.error('app2', '*** HERE! 2 ***')
+// applicationLogger.error('app2', '*** HERE! 3 ***')
 
-// 意図的にエラーを起こすルート
-app.get('/error', (req, res) => {
-  throw new Error('システムログの出力テスト Errorです')
-})
+// // 意図的にエラーを起こすルート
+// app.get('/error', (req, res) => {
+//   throw new Error('システムログの出力テスト Errorです')
+// })
 
 // view engine setup
 app.set('views', path.join(__dirname, '../../views'))
@@ -37,6 +39,24 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, '../../public')))
 
+// アクセス・ロガー 設定
+app.use(accessLogger())
+
+// テスト用コード
+app.get('/access1', (req, res) => {
+  res.status(200).send('access test 200')
+})
+app.get('/access2', (req, res) => {
+  res.status(304).send('access test 304')
+})
+app.get('/access3', (req, res) => {
+  res.status(404).send('access test 404')
+})
+app.get('/access4', (req, res) => {
+  res.status(500).send('access test 500')
+})
+
+// routers
 app.use('/', indexRouter)
 app.use('/users', usersRouter)
 

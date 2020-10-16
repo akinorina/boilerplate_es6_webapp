@@ -40,6 +40,21 @@ export default {
       backups: 5,
       //
       compress: true
+    },
+    //
+    accessLog: {
+      //
+      type: 'dateFile',
+      //
+      filename: path.join(APP_ROOT, './log/access/access.log'),
+      // 日毎にファイル分割
+      pattern: 'yyyy-MM-dd',
+      // 5日分の世代管理設定
+      daysToKeep: 5,
+      //
+      compress: true,
+      //
+      keepFileExt: true
     }
   },
   categories: {
@@ -60,6 +75,11 @@ export default {
     application: {
       appenders: ['applicationLog'],
       level: 'ALL'
+    },
+    //
+    access: {
+      appenders: ['accessLog'],
+      level: 'INFO'
     }
   }
 }
