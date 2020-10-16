@@ -32,6 +32,12 @@ module.exports = {
   module: {
     rules: [
       {
+        enforce: "pre",
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: "eslint-loader",
+      },
+      {
         // ローダーの処理対象ファイル
         test: /\.js$/,
         // ローダーの処理対象から外すディレクトリ
