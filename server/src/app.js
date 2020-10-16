@@ -7,22 +7,18 @@ import createError from 'http-errors'
 import path from 'path'
 import cookieParser from 'cookie-parser'
 
-// logger
-import log4js from 'log4js'
+// systemロガー
+import systemLogger from '../lib/log/systemLogger'
 
 // routers
 import indexRouter from './routes/index'
 import usersRouter from './routes/users'
 
-// logger
-const logger = log4js.getLogger()
-logger.level = 'debug'
-
 const app = express()
 
-app.get('/test', (req, res) => {
-  logger.debug('デバッグログが出力されます')
-  res.send('log test')
+// 意図的にエラーを起こすルート
+app.get('/error', (req, res) => {
+  throw new Error('システムログの出力テスト Errorです')
 })
 
 // view engine setup
@@ -41,6 +37,9 @@ app.use('/users', usersRouter)
 app.use(function (req, res, next) {
   next(createError(404))
 })
+
+// systemLogger をExpressに実装
+app.use(systemLogger())
 
 // error handler
 app.use(function (err, req, res, next) {
