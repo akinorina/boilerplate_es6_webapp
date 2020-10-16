@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./app"
+    "build": "npx webpack --mode development",
+    "start": "node ./dist/public/app"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -12,5 +13,13 @@
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
+    "babel-loader": "^8.1.0",
+    "webpack": "^5.1.2",
+    "webpack-cli": "^4.0.0",
+    "webpack-node-externals": "^2.5.2"
   }
 }
