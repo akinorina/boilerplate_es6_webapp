@@ -6,19 +6,29 @@ import express from 'express'
 import createError from 'http-errors'
 import path from 'path'
 import cookieParser from 'cookie-parser'
-import logger from 'morgan'
+
+// logger
+import log4js from 'log4js'
 
 // routers
 import indexRouter from './routes/index'
 import usersRouter from './routes/users'
 
+// logger
+const logger = log4js.getLogger()
+logger.level = 'debug'
+
 const app = express()
+
+app.get('/test', (req, res) => {
+  logger.debug('デバッグログが出力されます')
+  res.send('log test')
+})
 
 // view engine setup
 app.set('views', path.join(__dirname, '../../views'))
 app.set('view engine', 'ejs')
 
-app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
