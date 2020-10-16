@@ -9,7 +9,11 @@ export default {
   appenders: {
     consoleLog: {
       // 出力方法
-      type: 'console'
+      type: 'console',
+      layout: {
+        type: 'pattern',
+        pattern: '%[%d %p%]: %m'
+      }
     },
     //
     systemLog: {

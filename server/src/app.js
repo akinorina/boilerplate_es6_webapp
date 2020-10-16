@@ -13,6 +13,8 @@ import systemLogger from '../lib/log/systemLogger'
 // import applicationLogger from '../lib/log/applicationLogger'
 // accessロガー
 import accessLogger from '../lib/log/accessLogger'
+// consoleロガー
+import consoleLogger from '../lib/log/consoleLogger'
 
 // routers
 import indexRouter from './routes/index'
@@ -42,19 +44,26 @@ app.use(express.static(path.join(__dirname, '../../public')))
 // アクセス・ロガー 設定
 app.use(accessLogger())
 
-// テスト用コード
-app.get('/access1', (req, res) => {
-  res.status(200).send('access test 200')
-})
-app.get('/access2', (req, res) => {
-  res.status(304).send('access test 304')
-})
-app.get('/access3', (req, res) => {
-  res.status(404).send('access test 404')
-})
-app.get('/access4', (req, res) => {
-  res.status(500).send('access test 500')
-})
+// // テスト用コード
+// app.get('/access1', (req, res) => {
+//   res.status(200).send('access test 200')
+// })
+// app.get('/access2', (req, res) => {
+//   res.status(304).send('access test 304')
+// })
+// app.get('/access3', (req, res) => {
+//   res.status(404).send('access test 404')
+// })
+// app.get('/access4', (req, res) => {
+//   res.status(500).send('access test 500')
+// })
+
+// コンソールログ出力テスト
+consoleLogger.debug('--- console.log : debug ---')
+consoleLogger.info('--- console.log : info ---')
+consoleLogger.warn('--- console.log : warn ---')
+consoleLogger.error('--- console.log : error ---')
+consoleLogger.fatal('--- console.log : fatal ---')
 
 // routers
 app.use('/', indexRouter)
