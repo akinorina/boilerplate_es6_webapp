@@ -1,15 +1,17 @@
 module.exports = {
   apps : [{
-    name: 'NAME',
-    script: 'dist/public/index.js',
+    name: 'boilerplate_es6_webapp',
+    script: './dist/public/index.js',
     watch: true,
     ignore_watch: [],
-    instances: 3,
+    exec_mode: 'fork',
     env: {
-      'NODE_ENV': 'development'
+      'NODE_ENV': 'development',
+      'PORT': 3300
     },
     env_production: {
-      'NODE_ENV': 'production'
+      'NODE_ENV': 'production',
+      'PORT': 3300
     }
   }],
 
