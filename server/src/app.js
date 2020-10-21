@@ -6,6 +6,7 @@ import express from 'express'
 import createError from 'http-errors'
 import path from 'path'
 import cookieParser from 'cookie-parser'
+import session from 'express-session'
 
 // systemロガー
 import systemLogger from '../lib/log/systemLogger'
@@ -19,6 +20,11 @@ import accessLogger from '../lib/log/accessLogger'
 // routers
 import indexRouter from './routes/index'
 import usersRouter from './routes/users'
+import authRouter from './routes/auth'
+import mypagesRouter from './routes/mypages'
+
+// console.log('process.cwd()', process.cwd())
+// console.log('__dirname', __dirname)
 
 const app = express()
 
@@ -41,11 +47,32 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, '../../public')))
 
+// Session
+app.use(session({
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: false,
+    secure: false,
+    maxAge: 1000 * 60 * 10
+  }
+}))
+
+// Passport
+var passport = require('passport')
+app.use(passport.initialize())
+app.use(passport.session())
+
 // アクセス・ロガー 設定
 app.use(accessLogger())
 
 // routers
 app.use('/', indexRouter)
+app.use('/auth', authRouter)
+app.use('/mypages', mypagesRouter)
+
+// routers for API.
 app.use('/api/users', usersRouter)
 
 // catch 404 and forward to error handler
