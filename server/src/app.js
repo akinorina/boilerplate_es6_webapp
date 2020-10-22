@@ -19,9 +19,11 @@ import accessLogger from '../lib/log/accessLogger'
 
 // routers
 import indexRouter from './routes/index'
-import usersRouter from './routes/users'
 import authRouter from './routes/auth'
 import mypagesRouter from './routes/mypages'
+// routers on API.
+import apiAuthRouter from './routes/api/auth'
+import apiUsersRouter from './routes/api/users'
 
 // console.log('process.cwd()', process.cwd())
 // console.log('__dirname', __dirname)
@@ -73,7 +75,8 @@ app.use('/auth', authRouter)
 app.use('/mypages', mypagesRouter)
 
 // routers for API.
-app.use('/api/users', usersRouter)
+app.use('/api/auth', apiAuthRouter)
+app.use('/api/users', apiUsersRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

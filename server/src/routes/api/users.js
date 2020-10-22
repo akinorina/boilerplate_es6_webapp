@@ -16,13 +16,15 @@
 
 // Express
 import express from 'express'
+// libAuth
+import { isAuthenticatedForApi } from '../../libAuth'
 
 // console logger
-import consoleLogger from '../../lib/log/consoleLogger'
+import consoleLogger from '../../../lib/log/consoleLogger'
 
 // Sequelize ORM
 import { Sequelize, DataTypes, Op } from 'sequelize'
-import UserOrm from '../../models/user'
+import UserOrm from '../../../models/user'
 
 // express router
 const usersRouter = express.Router()
@@ -54,7 +56,7 @@ function getAllParameters (req) {
 // ------------------------------------------------------------------------------------------
 // #index
 // ------------------------------------------------------------------------------------------
-usersRouter.get('/', function (req, res, next) {
+usersRouter.get('/', isAuthenticatedForApi, function (req, res, next) {
   consoleLogger.info('--- run /api/users #index --- start. ---')
 
   // (1). get parameters for conditions
@@ -93,7 +95,7 @@ usersRouter.get('/', function (req, res, next) {
 // ------------------------------------------------------------------------------------------
 // #create
 // ------------------------------------------------------------------------------------------
-usersRouter.post('/', function (req, res, next) {
+usersRouter.post('/', isAuthenticatedForApi, function (req, res, next) {
   consoleLogger.info('--- run /api/users/ #create --- start. ---')
 
   // (1). パラメータ取得
@@ -142,7 +144,7 @@ usersRouter.post('/', function (req, res, next) {
 // ------------------------------------------------------------------------------------------
 // #show
 // ------------------------------------------------------------------------------------------
-usersRouter.get('/:id', function (req, res, next) {
+usersRouter.get('/:id', isAuthenticatedForApi, function (req, res, next) {
   consoleLogger.info('--- run /api/users/:id #show --- start. ---')
 
   // (1). パラメータ取得
@@ -172,7 +174,7 @@ usersRouter.get('/:id', function (req, res, next) {
 // ------------------------------------------------------------------------------------------
 // #update (put)
 // ------------------------------------------------------------------------------------------
-usersRouter.put('/:id', function (req, res, next) {
+usersRouter.put('/:id', isAuthenticatedForApi, function (req, res, next) {
   consoleLogger.info('--- run /api/users/:id #update --- start. ---')
 
   // (1). パラメータ取得
@@ -236,7 +238,7 @@ usersRouter.put('/:id', function (req, res, next) {
 // ------------------------------------------------------------------------------------------
 // #update (patch)
 // ------------------------------------------------------------------------------------------
-usersRouter.patch('/:id', function (req, res, next) {
+usersRouter.patch('/:id', isAuthenticatedForApi, function (req, res, next) {
   consoleLogger.info('--- run /api/users/:id #update (patch) --- start. ---')
 
   // (1). パラメータ取得
@@ -309,7 +311,7 @@ usersRouter.patch('/:id', function (req, res, next) {
 // ------------------------------------------------------------------------------------------
 // #delete
 // ------------------------------------------------------------------------------------------
-usersRouter.delete('/:id', function (req, res, next) {
+usersRouter.delete('/:id', isAuthenticatedForApi, function (req, res, next) {
   consoleLogger.info('--- run /api/users/:id #delete --- start. ---')
 
   // (1). パラメータ取得

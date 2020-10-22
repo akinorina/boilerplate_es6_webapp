@@ -1,15 +1,7 @@
 import express from 'express'
+import { isAuthenticated } from '../libAuth'
 
 const router = express.Router()
-
-//
-function isAuthenticated (req, res, next) {
-  if (req.isAuthenticated()) { // 認証済
-    return next()
-  } else { // 認証されていない
-    res.redirect('/auth/login') // ログイン画面に遷移
-  }
-}
 
 // page: /mypages/
 router.get('/', isAuthenticated, function (req, res, next) {
