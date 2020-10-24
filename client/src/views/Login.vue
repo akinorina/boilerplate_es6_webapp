@@ -8,6 +8,19 @@
       To Do List - Login
     </div>
 
+    <div>
+      <b-alert
+        :show="dismissCountDown"
+        dismissible
+        fade
+        variant="warning"
+        @dismissed="dismissCountDown=0"
+        @dismiss-count-down="countDownChanged"
+      >
+        emailアドレス、または、パスワードに誤りがあります。
+      </b-alert>
+    </div>
+
     <b-form @submit.prevent="onSubmit" class="page__form">
 
       <b-form-group
@@ -46,6 +59,10 @@
       <b-button type="submit" variant="primary">Login</b-button>
     </b-form>
 
+    <div class="page__links">
+      <router-link :to="{ name: 'Index', params: {} }" >TOPへ戻る</router-link>
+    </div>
+
   </div>
 </template>
 
@@ -65,7 +82,11 @@ export default {
       form: {
         email: '',
         password: ''
-      }
+      },
+
+      //
+      dismissSecs: 5,
+      dismissCountDown: 0
     }
   },
 
@@ -73,6 +94,13 @@ export default {
   },
 
   methods: {
+    /**
+     * show alert.
+     */
+    countDownChanged (dismissCountDown) {
+      this.dismissCountDown = dismissCountDown
+    },
+
     /**
      * formatter - lower case に変換
      */
@@ -84,7 +112,21 @@ export default {
      * onSubmit()
      */
     onSubmit () {
-      console.log('form', this.form)
+      //
+      const loginPayload = {}
+      loginPayload.form = this.form
+      loginPayload.successCallback = (res) => {
+        if (res.result === 'ok') {
+          this.$router.push({ name: 'AppIndex' })
+        } else {
+          this.dismissCountDown = this.dismissSecs
+        }
+      }
+      loginPayload.failureCallback = () => {
+        this.dismissCountDown = this.dismissSecs
+      }
+      //
+      this.$store.dispatch('login', loginPayload)
     }
   }
 }
@@ -106,6 +148,28 @@ export default {
     margin: 0 auto;
     max-width: 500px;
   }
+
+  &__links {
+    border: 1px #e0e0e0 dashed;
+    margin: 8px 16px;
+    padding: 8px 16px;
+
+    ul {
+      margin: 10px;
+
+      li {
+        display: inline-block;
+        margin: 0;
+        border-right: 1px #e0e0e0 solid;
+        padding: 0 10px;
+        list-style-type: none;
+      }
+      li:last-child {
+        border-right-width: 0;
+      }
+    }
+  }
+
 }
 
 </style>

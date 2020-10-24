@@ -8,6 +8,14 @@
       App - Index Page.
     </div>
 
+    <div class="page__links">
+      <ul>
+        <li><router-link :to="{ name: 'AppIndex', params: {} }" >App - Index</router-link></li>
+        <li><router-link :to="{ name: 'AppPage001', params: {} }" >App - Page001</router-link></li>
+        <li><router-link :to="{ name: 'AppPage002', params: {} }" >App - Page002</router-link></li>
+      </ul>
+    </div>
+
   </div>
 </template>
 
@@ -29,6 +37,13 @@ export default {
   props: {
   },
 
+  beforeCreate () {
+    // is authenticated?
+    if (!this.$store.getters.getResult) {
+      this.$router.push({ name: 'Login' })
+    }
+  },
+
   methods: {
   }
 }
@@ -45,6 +60,28 @@ export default {
     font-weight: bold;
     margin-bottom: 50px;
   }
+
+  &__links {
+    border: 1px #e0e0e0 dashed;
+    margin: 8px 16px;
+    padding: 8px 16px;
+
+    ul {
+      margin: 10px;
+
+      li {
+        display: inline-block;
+        margin: 0;
+        border-right: 1px #e0e0e0 solid;
+        padding: 0 10px;
+        list-style-type: none;
+      }
+      li:last-child {
+        border-right-width: 0;
+      }
+    }
+  }
+
 }
 
 </style>

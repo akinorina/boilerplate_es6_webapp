@@ -8,6 +8,10 @@
       ログアウトしました。
     </div>
 
+    <div class="page__links">
+      <router-link :to="{ name: 'Index', params: {} }" >TOPへ戻る</router-link>
+    </div>
+
   </div>
 </template>
 
@@ -16,7 +20,7 @@
 import Navbar from '../components/Navbar'
 
 export default {
-  name: 'Login',
+  name: 'Logout',
 
   components: {
     Navbar
@@ -50,6 +54,27 @@ export default {
   &__form {
     margin: 0 auto;
     max-width: 500px;
+  }
+
+  &__links {
+    border: 1px #e0e0e0 dashed;
+    margin: 8px 16px;
+    padding: 8px 16px;
+
+    ul {
+      margin: 10px;
+
+      li {
+        display: inline-block;
+        margin: 0;
+        border-right: 1px #e0e0e0 solid;
+        padding: 0 10px;
+        list-style-type: none;
+      }
+      li:last-child {
+        border-right-width: 0;
+      }
+    }
   }
 
 }
