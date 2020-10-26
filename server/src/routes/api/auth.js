@@ -65,14 +65,21 @@ passport.use(new LocalStrategy(
 // Local Strategy - Routing
 router.post('/login', passport.authenticate('local'), function (req, res) {
   applicationLogger.info('app', '------------------------- POST /login --- success')
-  applicationLogger.info('app', req.session)
-  res.status(200).json({ result: 'ok' })
+  applicationLogger.info('app', req.session.cookie)
+  applicationLogger.info('app', req.session.passport)
+  //
+  const responseData = { code: 0, message: 'ok', data: {} }
+  responseData.data.user_id = req.session.passport.user.id
+  responseData.data.name = req.session.passport.user.name
+  responseData.data.name_kana = req.session.passport.user.name_kana
+  responseData.data.email = req.session.passport.user.email
+  res.status(200).json(responseData)
 })
 
 // logout page.
 router.post('/logout', function (req, res) {
   req.logout()
-  res.status(200).json({ result: 'logout' })
+  res.status(200).json({ code: 0, message: 'ok', data: null })
 })
 
 export default router

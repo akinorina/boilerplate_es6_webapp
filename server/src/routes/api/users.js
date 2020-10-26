@@ -80,11 +80,11 @@ usersRouter.get('/', isAuthenticatedForApi, function (req, res, next) {
     consoleLogger.debug('resPeople', resPeople)
 
     // (3). make & send the response data.
-    const responseData = { total: null, count: null, offset: null, limit: null, data: [] }
-    responseData.offset = conditions.offset
-    responseData.limit = conditions.limit
+    const responseData = { code: 0, message: 'ok', total: null, count: null, offset: null, limit: null, data: [] }
     responseData.total = resPeople.count
     responseData.count = resPeople.rows.length
+    responseData.offset = conditions.offset
+    responseData.limit = conditions.limit
     responseData.data = resPeople.rows
     res.status(200).json(responseData)
   })
@@ -128,9 +128,11 @@ usersRouter.post('/', isAuthenticatedForApi, function (req, res, next) {
       consoleLogger.debug('--- resPerson', resPerson)
 
       // (6). APIレスポンスデータ作成、返信
-      const responseData = { data: null }
+      const responseData = { code: 0, message: 'ok', data: null }
       if (resPerson === null) {
-        res.status(403).json(responseData)
+        responseData.code = 1001
+        responseData.message = '対象データが見つかりませんでした。'
+        res.status(200).json(responseData)
       } else {
         responseData.data = resPerson.dataValues
         res.status(200).json(responseData)
@@ -159,9 +161,11 @@ usersRouter.get('/:id', isAuthenticatedForApi, function (req, res, next) {
     // consoleLogger.debug('resPerson', resPerson)
 
     // (3). APIレスポンスデータ作成、返信
-    const responseData = { data: null }
+    const responseData = { code: 0, message: 'ok', data: null }
     if (resPerson === null) {
-      res.status(404).json(responseData)
+      responseData.code = 1001
+      responseData.message = '対象データが見つかりませんでした。'
+      res.status(200).json(responseData)
     } else {
       responseData.data = resPerson.dataValues
       res.status(200).json(responseData)
@@ -217,14 +221,14 @@ usersRouter.put('/:id', isAuthenticatedForApi, function (req, res, next) {
         consoleLogger.debug('--- resPerson', resPerson)
 
         // (7). APIレスポンスデータ作成、返信
-        const responseData = { update: null, data: null }
+        const responseData = { code: 0, message: 'ok', data: null }
         if (resPerson === null) {
           // no data.
-          responseData.update = false
-          res.status(404).json(responseData)
+          responseData.code = 1001
+          responseData.message = '対象データが見つかりませんでした。'
+          res.status(200).json(responseData)
         } else {
           // available.
-          responseData.update = result[0] === 1
           responseData.data = resPerson.dataValues
           res.status(200).json(responseData)
         }
@@ -287,14 +291,14 @@ usersRouter.patch('/:id', isAuthenticatedForApi, function (req, res, next) {
           consoleLogger.debug('--- resPerson', resPerson)
 
           // (8). APIレスポンスデータ作成、返信
-          const responseData = { update: null, data: null }
+          const responseData = { code: 0, message: 'ok', data: null }
           if (resPerson === null) {
             // no data.
-            responseData.update = false
-            res.status(404).json(responseData)
+            responseData.code = 1001
+            responseData.message = '対象データが見つかりませんでした。'
+            res.status(200).json(responseData)
           } else {
             // available.
-            responseData.update = result[0] === 1
             responseData.data = resPerson.dataValues
             res.status(200).json(responseData)
           }
@@ -327,9 +331,11 @@ usersRouter.delete('/:id', isAuthenticatedForApi, function (req, res, next) {
     consoleLogger.debug('result', result)
 
     // (3). APIレスポンスデータ作成、返信
-    const responseData = { count: 0 }
+    const responseData = { code: 0, message: 'ok', count: 0, data: null }
     if (result === 0) {
-      res.status(404).json(responseData)
+      responseData.code = 1001
+      responseData.message = '対象データが見つかりませんでした。'
+      res.status(200).json(responseData)
     } else {
       responseData.count = result
       res.status(200).json(responseData)
