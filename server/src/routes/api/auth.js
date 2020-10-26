@@ -7,7 +7,7 @@ import { Sequelize, DataTypes, Op } from 'sequelize'
 import UserOrm from '../../../models/user'
 
 // sequelize orm
-const sequelize = new Sequelize('mysql://root:root@localhost:3306/boilerplate_es6_webapp', {
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
   logging: false
 })
 const Users = UserOrm(sequelize, DataTypes)
