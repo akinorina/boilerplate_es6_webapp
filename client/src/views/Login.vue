@@ -116,7 +116,7 @@ export default {
       const loginPayload = {}
       loginPayload.form = this.form
       loginPayload.successCallback = (res) => {
-        if (res.result === 'ok') {
+        if (res.code === 0 && res.data.user_id > 0) {
           this.$router.push({ name: 'AppIndex' })
         } else {
           this.dismissCountDown = this.dismissSecs

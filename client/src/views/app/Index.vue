@@ -39,7 +39,7 @@ export default {
 
   beforeCreate () {
     // is authenticated?
-    if (!this.$store.getters.getResult) {
+    if (!this.$store.getters.isAuthenticated) {
       this.$router.push({ name: 'Login' })
     }
   },

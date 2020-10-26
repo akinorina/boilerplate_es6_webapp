@@ -7,29 +7,35 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    isAuthenticated: null
+    authenticated: false,
+    userData: null
   },
   getters: {
-    // //
-    // getActiveUserInfo (state) {
-    //   return state.isAuthenticated
-    // },
+    // 認証済み(true) or not(false) 取得
+    isAuthenticated (state) {
+      return state.authenticated
+    },
 
-    //
-    getResult (state) {
-      return state.isAuthenticated
+    // ユーザー名
+    getUserName (state) {
+      return state.userData.name
+    },
+
+    // ユーザーデータ取得
+    getUserData (state) {
+      return state.userData
     }
   },
   mutations: {
     //
     setUser (state, userInfo) {
-      state.isAuthenticated = userInfo.result === 'ok'
-      console.log('setUser(): state.isAuthenticated = ', state.isAuthenticated)
+      state.authenticated = typeof userInfo === 'object' && userInfo.user_id > 0
+      state.userData = userInfo
     },
     //
     unsetUser (state) {
-      state.isAuthenticated = false
-      console.log('unsetUser(): state.isAuthenticated = ', state.isAuthenticated)
+      state.authenticated = false
+      state.userData = null
     }
   },
   actions: {
@@ -37,25 +43,20 @@ export default new Vuex.Store({
     login (context, params) {
       //
       const paramData = { email: params.form.email, password: params.form.password }
-      console.log('paramData', paramData)
 
       axios.post('/api/auth/login', paramData)
         .then((res) => {
-          console.log('----- then()')
           // success
-          console.log('res.data', res.data)
-          context.commit('setUser', res.data)
-          //
+          context.commit('setUser', res.data.data)
+          // callback
           if (typeof params.successCallback === 'function') {
             params.successCallback(res.data)
           }
         })
         .catch((err) => {
-          console.log('----- catch()')
           // failure
-          console.log(':::err', err)
-          context.commit('setUser', { result: 'ng' })
-
+          context.commit('unsetUser')
+          // callback
           if (typeof params.failureCallback === 'function') {
             params.failureCallback(err)
           }
@@ -68,18 +69,16 @@ export default new Vuex.Store({
       axios.post('/api/auth/logout', {})
         .then((res) => {
           // success
-          console.log('res', res)
           context.commit('unsetUser')
-
+          // callback
           if (typeof params.successCallback === 'function') {
             params.successCallback(res)
           }
         })
         .catch((err) => {
           // failure
-          console.log('err', err)
           context.commit('unsetUser')
-
+          // callback
           if (typeof params.failureCallback === 'function') {
             params.failureCallback(err)
           }

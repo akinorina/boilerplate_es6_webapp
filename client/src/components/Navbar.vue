@@ -7,7 +7,7 @@
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
-        <b-navbar-nav v-if="this.$store.getters.getResult">
+        <b-navbar-nav v-if="isAuthenticated">
           <b-nav-item href="#/app">INDEX</b-nav-item>
           <b-nav-item href="#/app/page001">Page001</b-nav-item>
           <b-nav-item href="#/app/page002">Page002</b-nav-item>
@@ -16,8 +16,8 @@
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
 
-          <b-navbar-nav right class="mr-3" v-if="activeUserResult">
-            <b-nav-item><em>User</em></b-nav-item>
+          <b-navbar-nav right class="mr-3" v-if="isAuthenticated">
+            <b-nav-item><em>{{ userName }}</em></b-nav-item>
             <b-button size="sm" class="my-2 mr-sm-0" type="submit" @click="logout">logout</b-button>
           </b-navbar-nav>
           <b-navbar-nav right v-else>
@@ -40,18 +40,21 @@ export default {
 
   data: function () {
     return {
-      logined: true
     }
   },
 
   props: {
-    msg: String
   },
 
   computed: {
     //
-    activeUserResult () {
-      return this.$store.getters.getResult
+    userName () {
+      return this.$store.getters.getUserName
+    },
+
+    //
+    isAuthenticated () {
+      return this.$store.getters.isAuthenticated
     }
   },
 
