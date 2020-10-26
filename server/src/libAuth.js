@@ -30,7 +30,7 @@ export function isAuthenticatedForApi (req, res, next) {
     return next()
   } else { // 認証されていない
     // ERROR発生
-    const responseData = { result: false, error: '未認証です。' }
+    const responseData = { code: 401, message: 'Unauthorized', data: null }
     res.status(401).json(responseData)
   }
 }
