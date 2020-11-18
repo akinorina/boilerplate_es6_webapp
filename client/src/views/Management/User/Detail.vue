@@ -87,8 +87,11 @@ export default {
     this.user.load(params, (res) => {
       // パンくずリスト 設定
       this.breadcrumb[2].text = res.data.name
-    }, (errors) => {
-      //
+    }, (err) => {
+      // 未ログイン状態なら Login へ遷移
+      if (err.response.status === 401) {
+        this.$router.push({ name: 'Login', params: {} })
+      }
     })
   },
 
@@ -124,8 +127,11 @@ export default {
       this.user.delete((res) => {
         // deleted successfully
         this.$router.push({ name: 'UserList', params: {} })
-      }, (errors) => {
-        // error of delete.
+      }, (err) => {
+        // 未ログイン状態なら Login へ遷移
+        if (err.response.status === 401) {
+          this.$router.push({ name: 'Login', params: {} })
+        }
       })
     },
 
