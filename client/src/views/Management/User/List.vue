@@ -90,10 +90,7 @@ export default {
 
   beforeMount () {
     //
-    this.userList.load(this.userParams, (res) => {
-      this.userParams.total = res.total
-    }, (errors) => {
-    })
+    this.searchUsers()
   },
 
   methods: {
@@ -106,10 +103,7 @@ export default {
         //
         this.userParams.offset -= this.userParams.limit
         //
-        this.userList.load(this.userParams, (res) => {
-          this.userParams.total = res.total
-        }, (errors) => {
-        })
+        this.searchUsers()
       }
     },
 
@@ -122,10 +116,7 @@ export default {
         //
         this.userParams.offset += this.userParams.limit
         //
-        this.userList.load(this.userParams, (res) => {
-          this.userParams.total = res.total
-        }, (errors) => {
-        })
+        this.searchUsers()
       }
     },
 
@@ -143,6 +134,21 @@ export default {
     makeNew () {
       //
       this.$router.push({ name: 'UserCreate', params: {} })
+    },
+
+    /**
+     * search Users
+     */
+    searchUsers () {
+      //
+      this.userList.load(this.userParams, (res) => {
+        this.userParams.total = res.total
+      }, (err) => {
+        // 未ログイン状態なら Login へ遷移
+        if (err.response.status === 401) {
+          this.$router.push({ name: 'Login', params: {} })
+        }
+      })
     }
   }
 }

@@ -34,6 +34,12 @@ export default class UserList {
       })
       .catch((err) => {
         // failure
+        console.log('UserList.load() - catch() : err:')
+        console.log(err)
+        console.log(typeof err)
+        console.log(Object.keys(err))
+        console.log(err.toJSON())
+        console.log(err.response.status === 401)
 
         // callback
         if (typeof failureCallback === 'function') {

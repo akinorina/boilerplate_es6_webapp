@@ -94,8 +94,11 @@ export default {
       this.user.create((res) => {
         //
         this.$router.push({ name: 'UserList', params: {} })
-      }, (errors) => {
-        //
+      }, (err) => {
+        // 未ログイン状態なら Login へ遷移
+        if (err.response.status === 401) {
+          this.$router.push({ name: 'Login', params: {} })
+        }
       })
     }
   }
