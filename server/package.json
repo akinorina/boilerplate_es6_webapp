@@ -1,6 +1,10 @@
 {
   "name": "server",
+<<<<<<< HEAD
   "version": "0.1.0",
+=======
+  "version": "0.0.1",
+>>>>>>> develop_client
   "private": true,
   "scripts": {
     "build": "npx webpack --mode development",

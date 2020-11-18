@@ -2,15 +2,14 @@
   <div class="navbar">
 
     <b-navbar toggleable="lg" type="dark" variant="info">
-      <b-navbar-brand href="#">WebApp</b-navbar-brand>
+      <b-navbar-brand class="mx-3" href="#">WebApp</b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav v-if="isAuthenticated">
-          <b-nav-item href="#/app">INDEX</b-nav-item>
-          <b-nav-item href="#/app/page001">Page001</b-nav-item>
-          <b-nav-item href="#/app/page002">Page002</b-nav-item>
+          <b-nav-item href="#/management">管理</b-nav-item>
+          <b-nav-item href="#/app">app</b-nav-item>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
@@ -84,6 +83,7 @@ export default {
 <style scoped lang="scss">
 
 .navbar {
+  padding: 0;
   width: 100%;
 }
 
