@@ -26,7 +26,8 @@
             { key: 'id', label: 'ID.' },
             { key: 'name', label: '氏名' },
             { key: 'name_kana', label: 'カナ' },
-            { key: 'email', label: 'emailアドレス' }
+            { key: 'email', label: 'emailアドレス' },
+            { key: 'password', label: 'パスワード' }
           ]"
           @row-clicked="selectUser"
         ></b-table>
