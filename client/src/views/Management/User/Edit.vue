@@ -21,6 +21,18 @@
           <tr><th>emailアドレス</th><td><b-form-input v-model="user.email" placeholder="メールアドレス"></b-form-input></td></tr>
         </table>
 
+        <b-alert
+          class="page__contents__user__alert"
+          :show="dismissCountDown"
+          variant="success"
+          fade
+          dismissible
+          @dismissed="dismissCountDown=0"
+          @dismiss-count-down="countDownChanged"
+        >
+          更新完了しました。
+        </b-alert>
+
         <div class="page__contents__user__controls">
           <b-button variant="outline-primary" @click="toBack">back</b-button>
           <b-button variant="danger" @click="updateData">更新</b-button>
@@ -51,11 +63,16 @@ export default {
       //
       user: null,
 
+      // 更新完了Alert 表示
+      dismissCountDown: 0,
+      // 更新完了Alert 表示 秒数
+      dismissSecs: 3,
+
       //
       breadcrumb: [
         { text: '管理画面', href: '#/management' },
         { text: 'ユーザー管理', href: '#/management/user' },
-        { text: 'xxx', active: true }
+        { text: '', active: true }
       ]
     }
   },
@@ -103,13 +120,21 @@ export default {
     updateData () {
       //
       this.user.update((res) => {
-        //
+        // Success Alert 表示
+        this.dismissCountDown = this.dismissSecs
       }, (err) => {
         // 未ログイン状態なら Login へ遷移
         if (err.response.status === 401) {
           this.$router.push({ name: 'Login', params: {} })
         }
       })
+    },
+
+    /**
+     * countDownChanged
+     */
+    countDownChanged (dismissCountDown) {
+      this.dismissCountDown = dismissCountDown
     }
   }
 }
@@ -172,6 +197,11 @@ export default {
           width: 100px;
           margin-right: 15px;
         }
+      }
+
+      &__alert {
+        width: 600px;
+        margin: 10px auto;
       }
     }
   }
