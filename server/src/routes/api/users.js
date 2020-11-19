@@ -16,11 +16,17 @@
 
 // Express
 import express from 'express'
+
+// Node.js
+import crypto from 'crypto'
+
 // libAuth
 import { isAuthenticatedForApi } from '../../libAuth'
 
 // console logger
 import consoleLogger from '../../../lib/log/consoleLogger'
+// applicationロガー
+import applicationLogger from '../../../lib/log/applicationLogger'
 
 // Sequelize ORM
 import { Sequelize, DataTypes, Op } from 'sequelize'
@@ -51,6 +57,14 @@ function getAllParameters (req) {
   // consoleLogger.debug('params', params)
   // consoleLogger.debug('--- getAllParams(req) --- end. ---')
   return params
+}
+
+/**
+ * パスワード文字列のHash化
+ *
+ */
+function makeHashForPassword (sPassword) {
+  return crypto.createHash('sha256').update(sPassword).digest('hex')
 }
 
 // ------------------------------------------------------------------------------------------
@@ -118,7 +132,13 @@ usersRouter.post('/', isAuthenticatedForApi, function (req, res, next) {
     const params = {}
     attrKeys.forEach((sKey) => {
       if (parameters[sKey]) {
-        params[sKey] = parameters[sKey]
+        if (sKey === 'password') {
+          // パスワード sha256化
+          params[sKey] = makeHashForPassword(parameters[sKey])
+        } else {
+          //
+          params[sKey] = parameters[sKey]
+        }
       }
     })
     consoleLogger.debug('--- params', params)
@@ -207,7 +227,13 @@ usersRouter.put('/:id', isAuthenticatedForApi, function (req, res, next) {
     attrKeys.forEach((sKey) => {
       consoleLogger.debug('key> ', sKey, parameters[sKey])
       if (parameters[sKey]) {
-        params[sKey] = parameters[sKey]
+        if (sKey === 'password') {
+          // パスワード sha256化
+          params[sKey] = makeHashForPassword(parameters[sKey])
+        } else {
+          //
+          params[sKey] = parameters[sKey]
+        }
       }
     })
     consoleLogger.debug('--- params', params)
@@ -275,7 +301,13 @@ usersRouter.patch('/:id', isAuthenticatedForApi, function (req, res, next) {
       attrKeys.forEach((sKey) => {
         consoleLogger.debug('key> ', sKey, parameters[sKey])
         if (parameters[sKey]) {
-          params[sKey] = parameters[sKey]
+          if (sKey === 'password') {
+            // パスワード sha256化
+            params[sKey] = makeHashForPassword(parameters[sKey])
+          } else {
+            //
+            params[sKey] = parameters[sKey]
+          }
         } else {
           params[sKey] = resPerson.dataValues[sKey]
         }
@@ -343,6 +375,76 @@ usersRouter.delete('/:id', isAuthenticatedForApi, function (req, res, next) {
   })
 
   consoleLogger.info('--- run /api/users/:id #delete --- end. ---')
+})
+
+// ------------------------------------------------------------------------------------------
+// #update password (put)
+// ------------------------------------------------------------------------------------------
+usersRouter.put('/update-password/:id', isAuthenticatedForApi, function (req, res, next) {
+  // consoleLogger.info('--- run /api/users/update-password/:id #update (put) --- start. ---')
+
+  // (1). パラメータ取得
+  const parameters = getAllParameters(req)
+  // consoleLogger.debug('parameters', parameters)
+  if (req.params.id === undefined) {
+    throw new Error('no data id.')
+  }
+  // consoleLogger.debug('parameters.id', parameters.id)
+  applicationLogger.info('app', 'parameters: ' + JSON.stringify(parameters))
+
+  // (2). DB情報（column）を取得
+  Users.describe().then(attributes => {
+    // consoleLogger.debug('result', attributes)
+
+    // (3). 生成データの key 一覧を作成
+    const attrKeys = []
+    Object.keys(attributes).forEach((sKey) => {
+      if (sKey.match(/_at$/) === null) {
+        attrKeys.push(sKey)
+      }
+    })
+    // consoleLogger.debug('attrKeys', attrKeys)
+
+    // (4). 既存データを取得
+    Users.findByPk(parameters.id).then(resPerson => {
+      // consoleLogger.debug('resPerson', resPerson)
+      applicationLogger.info('app', '-----')
+      applicationLogger.info('app', 'resPerson: ' + JSON.stringify(resPerson))
+
+      // (xx). 現在のパスワード一致を確認
+      if (makeHashForPassword(parameters.password) !== resPerson.password) {
+        // 不一致の場合はエラーを返す
+        const responseData = { code: 1001, message: 'NG: 現在のパスワードが不一致。', data: null }
+        res.status(200).json(responseData)
+      }
+
+      // (xx). 生成データ作成
+      const params = {}
+      attrKeys.forEach((sKey) => {
+        // consoleLogger.debug('key> ', sKey, parameters[sKey])
+        if (sKey === 'password' && parameters.new_password) {
+          // パスワード sha256化
+          params[sKey] = makeHashForPassword(parameters.new_password)
+        } else {
+          params[sKey] = resPerson.dataValues[sKey]
+        }
+      })
+      // consoleLogger.debug('--- params', params)
+
+      // (xx). update it.
+      Users.update(params, { where: { id: parameters.id } }).then(result => {
+        // consoleLogger.debug('--- result: ', result)
+
+        // (xx). APIレスポンスデータ作成、返信
+        const responseData = { code: 0, message: 'ok', data: null }
+        res.status(200).json(responseData)
+
+        // res.send('routed: users#update (put)')
+      })
+    })
+  })
+
+  // consoleLogger.info('--- run /api/users/update-password/:id #update (put) --- end. ---')
 })
 
 export default usersRouter
