@@ -16,9 +16,10 @@
 
         <table class="page__contents__user__tbl">
           <tr><th>ID.</th><td>{{user.id}}</td></tr>
-          <tr><th>氏名</th><td><b-form-input v-model="user.name" placeholder="氏名"></b-form-input></td></tr>
-          <tr><th>カナ</th><td><b-form-input v-model="user.name_kana" placeholder="氏名カナ"></b-form-input></td></tr>
-          <tr><th>emailアドレス</th><td><b-form-input v-model="user.email" placeholder="メールアドレス"></b-form-input></td></tr>
+          <tr><th>氏名</th><td><b-form-input v-model="user.name" placeholder=""></b-form-input></td></tr>
+          <tr><th>カナ</th><td><b-form-input v-model="user.name_kana" placeholder=""></b-form-input></td></tr>
+          <tr><th>emailアドレス</th><td><b-form-input v-model="user.email" placeholder=""></b-form-input></td></tr>
+          <tr><th>パスワード</th><td><b-form-input v-model="user.password" placeholder=""></b-form-input></td></tr>
         </table>
 
         <b-alert
