@@ -7,15 +7,19 @@
     <div class="page__contents">
 
       <div class="page__contents__title">
-        管理画面
+        MyPage
       </div>
 
       <b-breadcrumb :items="breadcrumb"></b-breadcrumb>
 
       <div class="page__contents__contents">
 
-        <div class="page__contents__contents__item" @click="$router.push({ name: 'UserList' })">
-          User管理
+        <div class="page__contents__contents__item" @click="$router.push({ name: 'EditProfile' })">
+          プロフィール編集
+        </div>
+
+        <div class="page__contents__contents__item" @click="$router.push({ name: 'ChangePassword' })">
+          パスワード変更
         </div>
 
       </div>
@@ -30,7 +34,7 @@
 import Navbar from '../../components/Navbar'
 
 export default {
-  name: 'Index',
+  name: 'MyPage',
 
   components: {
     Navbar
@@ -39,7 +43,7 @@ export default {
   data: function () {
     return {
       breadcrumb: [
-        { text: '管理画面', active: true }
+        { text: 'My Page', active: true }
       ]
     }
   },
@@ -101,7 +105,7 @@ export default {
         vertical-align: middle;
         text-align: center;
         line-height: 100px;
-        font-size: 18pt;
+        font-size: 14pt;
         cursor: pointer;
       }
     }
