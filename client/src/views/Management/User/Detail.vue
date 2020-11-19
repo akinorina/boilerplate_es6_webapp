@@ -31,8 +31,13 @@
 
     </div>
 
-    <b-modal id="modal-delete" title="たいとる" @ok="toDeleteOk" @cancel="toDeleteCancel">
-      <p class="my-4">削除しますか？</p>
+    <b-modal
+      id="modal-delete"
+      title="削除"
+      @ok="toDeleteOk"
+      @cancel="toDeleteCancel"
+    >
+      <p class="my-0">このユーザーを削除しますか？</p>
     </b-modal>
 
   </div>
@@ -60,7 +65,7 @@ export default {
       breadcrumb: [
         { text: '管理画面', href: '#/management' },
         { text: 'ユーザー管理', href: '#/management/user' },
-        { text: 'xxx', active: true }
+        { text: '', active: true }
       ]
     }
   },
