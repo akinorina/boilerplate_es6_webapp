@@ -154,4 +154,36 @@ export default class User {
         }
       })
   }
+
+  /**
+   * changePassword
+   *
+   */
+  changePassword (params, successCallback, failureCallback) {
+    // params の内容
+    // params.id - パスワード変更するユーザーの ID
+    // params.password - 変更前のパスワード
+    // params.new_password - 変更後のパスワード
+    // console.log('params', params)
+
+    // execute to update
+    axios.put('/api/users/update-password/' + params.id, params)
+      .then((res) => {
+        // success
+
+        // callback
+        if (typeof successCallback === 'function') {
+          successCallback(res.data)
+        }
+      })
+      .catch((err) => {
+        // failure
+        console.error('--- error', err)
+
+        // callback
+        if (typeof failureCallback === 'function') {
+          failureCallback(err)
+        }
+      })
+  }
 }
