@@ -3,7 +3,7 @@ module.exports = {
     name: 'boilerplate_es6_webapp',
     script: './dist/public/index.js',
     watch: true,
-    ignore_watch: [],
+    ignore_watch: ['dist/log'],
     exec_mode: 'fork',
     env: {
       'NODE_ENV': 'development',
@@ -13,7 +13,7 @@ module.exports = {
     env_production: {
       'NODE_ENV': 'production',
       'PORT': 3300,
-      'DATABASE_URL': 'mysql://boilerplate_es6_webapp:boilerplate_es6_webapp@localhost:3306/boilerplate_es6_webapp'
+      'DATABASE_URL': 'mysql://boilerplate_es6_webapp:Boilerplate_es6_webapp!@localhost:3306/boilerplate_es6_webapp'
     }
   }],
 

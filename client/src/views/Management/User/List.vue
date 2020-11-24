@@ -25,9 +25,8 @@
           :fields="[
             { key: 'id', label: 'ID.' },
             { key: 'name', label: '氏名' },
-            { key: 'name_kana', label: 'カナ' },
-            { key: 'email', label: 'emailアドレス' },
-            { key: 'password', label: 'パスワード' }
+            { key: 'name_kana', label: 'かな' },
+            { key: 'email', label: 'emailアドレス' }
           ]"
           @row-clicked="selectUser"
         ></b-table>

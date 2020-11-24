@@ -13,6 +13,11 @@ import UserDetail from '../views/Management/User/Detail'
 import UserEdit from '../views/Management/User/Edit'
 import UserCreate from '../views/Management/User/Create'
 
+// MyPages
+import MyPage from '../views/MyPages/MyPage'
+import EditProfile from '../views/MyPages/EditProfile'
+import ChangePassword from '../views/MyPages/ChangePassword'
+
 //
 import AppIndex from '../views/app/Index'
 import AppPage001 from '../views/app/Page001'
@@ -61,6 +66,22 @@ const routes = [
     path: '/management/user/create',
     name: 'UserCreate',
     component: UserCreate
+  },
+
+  {
+    path: '/mypage',
+    name: 'MyPage',
+    component: MyPage
+  },
+  {
+    path: '/mypage/edit-profile',
+    name: 'EditProfile',
+    component: EditProfile
+  },
+  {
+    path: '/mypage/change-password',
+    name: 'ChangePassword',
+    component: ChangePassword
   },
 
   {

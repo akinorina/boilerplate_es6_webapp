@@ -17,9 +17,8 @@
         <table class="page__contents__user__tbl">
           <tr><th>ID.</th><td>{{user.id}}</td></tr>
           <tr><th>氏名</th><td>{{user.name}}</td></tr>
-          <tr><th>カナ</th><td>{{user.name_kana}}</td></tr>
+          <tr><th>かな</th><td>{{user.name_kana}}</td></tr>
           <tr><th>emailアドレス</th><td>{{user.email}}</td></tr>
-          <tr><th>パスワード</th><td>{{user.password}}</td></tr>
         </table>
 
         <div class="page__contents__user__controls">

@@ -7,7 +7,7 @@
     <div class="page__contents">
 
       <div class="page__contents__title">
-        ユーザー管理 - 作成
+        MyPage - プロフィール編集
       </div>
 
       <b-breadcrumb :items="breadcrumb"></b-breadcrumb>
@@ -19,14 +19,23 @@
           <tr><th>氏名</th><td><b-form-input v-model="user.name" placeholder=""></b-form-input></td></tr>
           <tr><th>かな</th><td><b-form-input v-model="user.name_kana" placeholder=""></b-form-input></td></tr>
           <tr><th>emailアドレス</th><td><b-form-input v-model="user.email" placeholder=""></b-form-input></td></tr>
-          <tr><th>パスワード</th><td><b-form-input v-model="user.password" placeholder=""></b-form-input></td></tr>
         </table>
 
-        <div class="page__contents__user__controls">
-          <b-button variant="outline-primary" @click="toBack">back</b-button>
-          <b-button variant="danger" @click="createData">作成</b-button>
-        </div>
+        <b-alert
+          class="page__contents__user__alert"
+          :show="alertData.countDown"
+          :variant="alertData.variant"
+          fade
+          dismissible
+          @dismissed="alertData.countDown=0"
+          @dismiss-count-down="alertData.countDownChanged"
+        >
+          {{alertData.message}}
+        </b-alert>
 
+        <div class="page__contents__user__controls">
+          <b-button variant="primary" @click="updateData">更新</b-button>
+        </div>
       </div>
 
     </div>
@@ -36,9 +45,9 @@
 
 <script>
 //
-import Navbar from '../../../components/Navbar'
+import Navbar from '../../components/Navbar'
 //
-import User from '../../../models/User'
+import User from '../../models/User'
 
 export default {
   name: 'UserDetail',
@@ -49,14 +58,24 @@ export default {
 
   data: function () {
     return {
-      //
+      // ログインユーザー情報
       user: null,
 
-      //
+      // Alert表示
+      alertData: {
+        message: '',
+        countDown: 0,
+        secs: 3,
+        variant: '',
+        countDownChanged: (dCountDown) => {
+          this.alertData.countDown = dCountDown
+        }
+      },
+
+      // パンくずリスト
       breadcrumb: [
-        { text: '管理画面', href: '#/management' },
-        { text: 'ユーザー管理', href: '#/management/user' },
-        { text: '新規作成', active: true }
+        { text: 'My Pages', href: '#/mypage' },
+        { text: 'プロフィール編集', active: true }
       ]
     }
   },
@@ -77,28 +96,40 @@ export default {
   },
 
   beforeMount () {
+    //
+    const loginUser = this.$store.getters.getUserData
+    const params = { id: loginUser.user_id }
+    this.user.load(params, (res) => {
+      // success
+    }, (err) => {
+      // failure
+
+      // 未ログイン状態なら Login へ遷移
+      if (err.response.status === 401) {
+        this.$router.push({ name: 'Login', params: {} })
+      }
+    })
   },
 
   methods: {
     /**
-     * toBack
+     * updateData
      */
-    toBack () {
-      this.$router.push({ name: 'UserList', params: {} })
-    },
-
-    /**
-     * createData
-     */
-    createData () {
+    updateData () {
       //
-      this.user.create((res) => {
-        //
-        this.$router.push({ name: 'UserList', params: {} })
+      this.user.update((res) => {
+        // success
+        this.alertData.variant = 'success'
+        this.alertData.message = 'プロフィール更新 完了。'
+        this.alertData.countDown = this.alertData.secs
       }, (err) => {
         // 未ログイン状態なら Login へ遷移
         if (err.response.status === 401) {
           this.$router.push({ name: 'Login', params: {} })
+        } else {
+          this.alertData.variant = 'danger'
+          this.alertData.message = 'プロフィール更新 失敗。'
+          this.alertData.countDown = this.alertData.secs
         }
       })
     }
@@ -163,6 +194,11 @@ export default {
           width: 100px;
           margin-right: 15px;
         }
+      }
+
+      &__alert {
+        width: 600px;
+        margin: 10px auto;
       }
     }
   }
