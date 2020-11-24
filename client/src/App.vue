@@ -4,6 +4,39 @@
   </div>
 </template>
 
+<script>
+//
+export default {
+  name: 'App',
+
+  components: {
+  },
+
+  mounted () {
+    this.getPageThis()
+  },
+
+  updated () {
+    this.getPageThis()
+  },
+
+  data: function () {
+    return {}
+  },
+
+  props: {
+  },
+
+  methods: {
+    //
+    getPageThis () {
+      // 現在のページの内容を console で閲覧できる
+      window.pageThis = this.$children[0]
+    }
+  }
+}
+</script>
+
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
