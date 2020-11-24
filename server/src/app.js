@@ -52,11 +52,11 @@ app.use(express.static(path.join(__dirname, '../../public')))
 // Session
 app.use(session({
   secret: 'secret',
-  resave: true,
+  resave: false,
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    secure: true,
+    secure: false,
     maxAge: 1000 * 60 * 60 * 3
   }
 }))
