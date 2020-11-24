@@ -1,4 +1,5 @@
 module.exports = {
+  outputDir: 'dist/public',
   configureWebpack: {
     devServer: {
       proxy: 'http://boilerplate-es6-webapp.local'
