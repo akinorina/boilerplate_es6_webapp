@@ -117,7 +117,7 @@ export default {
      */
     updateData () {
       //
-      this.user.update((res) => {
+      this.user.updateWithoutPassword((res) => {
         // success
         this.alertData.variant = 'success'
         this.alertData.message = 'プロフィール更新 完了。'
