@@ -416,31 +416,31 @@ usersRouter.put('/update-password/:id', isAuthenticatedForApi, function (req, re
         // 不一致の場合はエラーを返す
         const responseData = { code: 1001, message: 'NG: 現在のパスワードが不一致。', data: null }
         res.status(200).json(responseData)
+      } else {
+        // (xx). 生成データ作成
+        const params = {}
+        attrKeys.forEach((sKey) => {
+          // consoleLogger.debug('key> ', sKey, parameters[sKey])
+          if (sKey === 'password' && parameters.new_password) {
+            // パスワード sha256化
+            params[sKey] = makeHashForPassword(parameters.new_password)
+          } else {
+            params[sKey] = resPerson.dataValues[sKey]
+          }
+        })
+        // consoleLogger.debug('--- params', params)
+
+        // (xx). update it.
+        Users.update(params, { where: { id: parameters.id } }).then(result => {
+          // consoleLogger.debug('--- result: ', result)
+
+          // (xx). APIレスポンスデータ作成、返信
+          const responseData = { code: 0, message: 'ok', data: null }
+          res.status(200).json(responseData)
+
+          // res.send('routed: users#update (put)')
+        })
       }
-
-      // (xx). 生成データ作成
-      const params = {}
-      attrKeys.forEach((sKey) => {
-        // consoleLogger.debug('key> ', sKey, parameters[sKey])
-        if (sKey === 'password' && parameters.new_password) {
-          // パスワード sha256化
-          params[sKey] = makeHashForPassword(parameters.new_password)
-        } else {
-          params[sKey] = resPerson.dataValues[sKey]
-        }
-      })
-      // consoleLogger.debug('--- params', params)
-
-      // (xx). update it.
-      Users.update(params, { where: { id: parameters.id } }).then(result => {
-        // consoleLogger.debug('--- result: ', result)
-
-        // (xx). APIレスポンスデータ作成、返信
-        const responseData = { code: 0, message: 'ok', data: null }
-        res.status(200).json(responseData)
-
-        // res.send('routed: users#update (put)')
-      })
     })
   })
 
