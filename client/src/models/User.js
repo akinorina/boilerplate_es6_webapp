@@ -186,4 +186,39 @@ export default class User {
         }
       })
   }
+
+  /**
+   * password を除く update
+   *
+   */
+  updateWithoutPassword (successCallback, failureCallback) {
+    // make the parameter data.
+    const params = {}
+    this._keys.forEach((sK) => {
+      if (sK !== 'password') {
+        params[sK] = this[sK]
+      }
+    })
+    console.log('params', params)
+
+    // execute to update
+    axios.put('/api/users/' + params.id, params)
+      .then((res) => {
+        // success
+
+        // callback
+        if (typeof successCallback === 'function') {
+          successCallback(res.data)
+        }
+      })
+      .catch((err) => {
+        // failure
+        console.error('--- error', err)
+
+        // callback
+        if (typeof failureCallback === 'function') {
+          failureCallback(err)
+        }
+      })
+  }
 }
