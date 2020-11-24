@@ -1,3 +1,6 @@
+// Node.js
+import crypto from 'crypto'
+
 // Routing for Passport
 import express from 'express'
 import applicationLogger from '../../lib/log/applicationLogger'
@@ -13,6 +16,14 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
 const Users = UserOrm(sequelize, DataTypes)
 
 var router = express.Router()
+
+/**
+ * パスワード文字列のHash化
+ *
+ */
+function makeHashForPassword (sPassword) {
+  return crypto.createHash('sha256').update(sPassword).digest('hex')
+}
 
 // Passport
 var passport = require('passport')
@@ -35,12 +46,14 @@ passport.use(new LocalStrategy(
     passwordField: 'password'
   },
   function (username, password, done) {
+    // パスワード文字列の sha256() Hash化
+    const encryptedPassword = makeHashForPassword(password)
     // 検索条件
     const conditions = {
       where: {
         [Op.and]: [
           { email: username },
-          { password: password }
+          { password: encryptedPassword }
         ]
       }
     }
