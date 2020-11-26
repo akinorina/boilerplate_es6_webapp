@@ -15,9 +15,9 @@
       <div class="page__contents__user">
 
         <table class="page__contents__user__tbl">
-          <tr><th>現在のパスワード</th><td><b-form-input v-model="Passwords.current" placeholder=""></b-form-input></td></tr>
-          <tr><th>新しいパスワード</th><td><b-form-input v-model="Passwords.new" placeholder=""></b-form-input></td></tr>
-          <tr><th>新しいパスワード再入力</th><td><b-form-input v-model="Passwords.new2" placeholder=""></b-form-input></td></tr>
+          <tr><th>現在のパスワード</th><td><b-form-input type="password" v-model="Passwords.current" placeholder=""></b-form-input></td></tr>
+          <tr><th>新しいパスワード</th><td><b-form-input type="password" v-model="Passwords.new" placeholder=""></b-form-input></td></tr>
+          <tr><th>新しいパスワード再入力</th><td><b-form-input type="password" v-model="Passwords.new2" placeholder=""></b-form-input></td></tr>
         </table>
 
         <b-alert
