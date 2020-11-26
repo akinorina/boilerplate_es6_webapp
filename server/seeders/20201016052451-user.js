@@ -14,23 +14,23 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
 
     return queryInterface.bulkInsert('users', [{
-      name: '仲田明紀',
-      name_kana: 'なかたあきのり',
-      email: 'nakata@real-its.com',
+      name: '鈴木　一郎',
+      name_kana: 'すずき　いちろう',
+      email: 'suzuki@gmail.com',
       password: makeHashForPassword('aaaa1111'),
       created_at: new Date(),
       updated_at: new Date()
     },{
-      name: '鈴木一郎',
-      name_kana: 'すずきいちろう',
-      email: 'suzuki@real-its.com',
+      name: '佐藤　二郎',
+      name_kana: 'さとう　じろう',
+      email: 'satou@gmail.com',
       password: makeHashForPassword('bbbb2222'),
       created_at: new Date(),
       updated_at: new Date()
     },{
-      name: '佐藤次郎',
-      name_kana: 'さとうじろう',
-      email: 'satou@real-its.com',
+      name: '本田　三郎',
+      name_kana: 'ほんだ　さぶろう',
+      email: 'honda@gmail.com',
       password: makeHashForPassword('cccc3333'),
       created_at: new Date(),
       updated_at: new Date()
