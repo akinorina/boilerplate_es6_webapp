@@ -19,7 +19,7 @@
           <tr><th>氏名</th><td><b-form-input v-model="user.name" placeholder=""></b-form-input></td></tr>
           <tr><th>かな</th><td><b-form-input v-model="user.name_kana" placeholder=""></b-form-input></td></tr>
           <tr><th>emailアドレス</th><td><b-form-input v-model="user.email" placeholder=""></b-form-input></td></tr>
-          <tr><th>パスワード</th><td><b-form-input v-model="user.password" placeholder=""></b-form-input></td></tr>
+          <tr><th>パスワード</th><td><b-form-input type="password" v-model="user.password" placeholder=""></b-form-input></td></tr>
         </table>
 
         <div class="page__contents__user__controls">
