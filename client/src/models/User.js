@@ -46,7 +46,6 @@ export default class User {
       })
       .catch((err) => {
         // failure
-        console.error('--- error', err)
 
         // callback
         if (typeof failureCallback === 'function') {
@@ -65,12 +64,14 @@ export default class User {
     this._keys.forEach((sK) => {
       params[sK] = this[sK]
     })
-    // console.log('params', params)
 
     // execute to update
     axios.post('/api/users', params)
       .then((res) => {
         // success
+        this._keys.forEach((sK) => {
+          this[sK] = res.data.data[sK]
+        })
 
         // callback
         if (typeof successCallback === 'function') {
@@ -79,7 +80,6 @@ export default class User {
       })
       .catch((err) => {
         // failure
-        console.error('--- error', err)
 
         // callback
         if (typeof failureCallback === 'function') {
@@ -96,14 +96,20 @@ export default class User {
     // make the parameter data.
     const params = {}
     this._keys.forEach((sK) => {
-      params[sK] = this[sK]
+      if (sK !== 'password') {
+        params[sK] = this[sK]
+      }
     })
-    // console.log('params', params)
 
     // execute to update
     axios.put('/api/users/' + params.id, params)
       .then((res) => {
         // success
+        this._keys.forEach((sK) => {
+          if (sK !== 'password') {
+            this[sK] = res.data.data[sK]
+          }
+        })
 
         // callback
         if (typeof successCallback === 'function') {
@@ -112,7 +118,6 @@ export default class User {
       })
       .catch((err) => {
         // failure
-        console.error('--- error', err)
 
         // callback
         if (typeof failureCallback === 'function') {
@@ -129,15 +134,25 @@ export default class User {
     // make the parameter data.
     const params = {}
     params.id = this.id
-    // console.log('params', params)
     if (isNaN(parseInt(params.id))) {
-      return false
+      if (typeof failureCallback === 'function') {
+        failureCallback(new Error('bad id'))
+      } else {
+        return false
+      }
     }
 
     // execute to update
     axios.delete('/api/users/' + params.id, params)
       .then((res) => {
         // success
+        this._keys.forEach((sK) => {
+          if (sK === 'id') {
+            this[sK] = null
+          } else {
+            this[sK] = ''
+          }
+        })
 
         // callback
         if (typeof successCallback === 'function') {
@@ -146,7 +161,6 @@ export default class User {
       })
       .catch((err) => {
         // failure
-        console.error('--- error', err)
 
         // callback
         if (typeof failureCallback === 'function') {
@@ -164,7 +178,13 @@ export default class User {
     // params.id - パスワード変更するユーザーの ID
     // params.password - 変更前のパスワード
     // params.new_password - 変更後のパスワード
-    // console.log('params', params)
+    if (isNaN(parseInt(params.id))) {
+      if (typeof failureCallback === 'function') {
+        failureCallback()
+      } else {
+        return false
+      }
+    }
 
     // execute to update
     axios.put('/api/users/update-password/' + params.id, params)
@@ -178,42 +198,6 @@ export default class User {
       })
       .catch((err) => {
         // failure
-        console.error('--- error', err)
-
-        // callback
-        if (typeof failureCallback === 'function') {
-          failureCallback(err)
-        }
-      })
-  }
-
-  /**
-   * password を除く update
-   *
-   */
-  updateWithoutPassword (successCallback, failureCallback) {
-    // make the parameter data.
-    const params = {}
-    this._keys.forEach((sK) => {
-      if (sK !== 'password') {
-        params[sK] = this[sK]
-      }
-    })
-    console.log('params', params)
-
-    // execute to update
-    axios.put('/api/users/' + params.id, params)
-      .then((res) => {
-        // success
-
-        // callback
-        if (typeof successCallback === 'function') {
-          successCallback(res.data)
-        }
-      })
-      .catch((err) => {
-        // failure
-        console.error('--- error', err)
 
         // callback
         if (typeof failureCallback === 'function') {
